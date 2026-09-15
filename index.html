@@ -1,53 +1,66 @@
 <!DOCTYPE html>
-<!--
-  ============================================================
-  个人品牌官网 / Personal Brand Website
-  ------------------------------------------------------------
-  占位图清单（直接用同名文件覆盖即可，无需改代码）：
-    images/avatar.jpg        —— 个人头像（已用你的 images/avatar.jpg.jfif 复制填充）
-    images/video-poster.jpg  —— 视频封面 1280x720
-    images/article-01.jpg    —— 文章1封面 800x500
-    images/article-02.jpg    —— 文章2封面 800x500
-    images/article-03.jpg    —— 文章3封面 800x500
-    images/work-01.jpg       —— 作品1 800x600
-    images/work-02.jpg       —— 作品2 800x600
-    images/work-03.jpg       —— 作品3 800x600
-    images/work-04.jpg       —— 作品4 800x600
-    images/work-05.jpg       —— 作品5 800x600
-    images/work-06.jpg       —— 作品6 800x600
-  所有占位图上已写好文件名，替换后水印自动消失。
-  文字内容（占位文字）在 js/main.js 的 translations 对象中修改。
-  ============================================================
--->
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YOUR NAME | 个人品牌官网</title>
-  <meta name="description" content="个人品牌官网 - 科技感 / 科幻风 / 粒子交互">
+  <title>Good Things - Vetted Fiverr Sellers & Free Buyer Guides</title>
+  <meta name="description" content="GoodThings reviews and compares real Fiverr sellers — honest picks, real prices and free step-by-step buyer guides for design, web, SEO, video and marketing.">
+  <link rel="canonical" href="https://goodthings.top/">
+
+  <!-- Open Graph (Facebook / Pinterest Rich Pins) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GoodThings">
+  <meta property="og:url" content="https://goodthings.top/">
+  <meta property="og:title" content="Good Things - Vetted Fiverr Sellers & Free Buyer Guides">
+  <meta property="og:description" content="Honest reviews, price comparisons and free step-by-step guides for the best Fiverr sellers — so you can hire with confidence.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&h=630&q=70">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Good Things - Vetted Fiverr Sellers & Free Buyer Guides">
+  <meta name="twitter:description" content="Honest reviews, price comparisons and free buyer guides for the best Fiverr sellers.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&h=630&q=70">
+
+  <!-- Schema.org structured data (Pinterest Rich Pins friendly) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "GoodThings",
+    "alternateName": "Good Things",
+    "url": "https://goodthings.top/",
+    "description": "Honest reviews, price comparisons and free step-by-step buyer guides for the best Fiverr sellers in design, web, SEO, video and marketing.",
+    "inLanguage": "en",
+    "publisher": {
+      "@type": "Organization",
+      "name": "GoodThings",
+      "url": "https://goodthings.top/"
+    }
+  }
+  </script>
+
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>◈</text></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- 粒子背景画布（全屏，鼠标拖动粒子追踪） -->
+  <!-- Particle background (mouse drag tracking) -->
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
   <div class="grid-overlay" aria-hidden="true"></div>
   <div class="scanline" aria-hidden="true"></div>
 
-  <!-- ===== 导航栏 ===== -->
+  <!-- ===== Header & Navigation ===== -->
   <header class="navbar" id="navbar">
-    <a class="logo" href="#hero">◈ <span data-i18n="logo">你的名字</span></a>
+    <a class="logo" href="#hero">◈ <span>GOOD THINGS</span></a>
     <nav class="nav-links" id="nav-links">
-      <a href="#about"    data-i18n="nav.about">关于我</a>
-      <a href="#video"    data-i18n="nav.video">个人视频</a>
-      <a href="#articles" data-i18n="nav.articles">文章</a>
-      <a href="#works"    data-i18n="nav.works">作品展示</a>
+      <a href="#hero">Home</a>
+      <a href="#recommended-services">Top Services</a>
+      <a href="#guides">Guides & Articles</a>
+      <a href="#sellers">Best Fiverr Sellers</a>
+      <a href="#disclosure">Affiliate Disclosure</a>
     </nav>
     <div class="nav-right">
-      <button id="lang-toggle" class="lang-btn" title="Switch Language">
-        <span class="lang-icon">⇄</span><span id="lang-label">EN</span>
-      </button>
+      <a href="#recommended-services" class="btn-cta-nav">Explore Top Picks</a>
       <button id="menu-btn" class="menu-btn" aria-label="menu">
         <span></span><span></span><span></span>
       </button>
@@ -55,203 +68,266 @@
   </header>
 
   <main>
-    <!-- ===== Hero 首屏 ===== -->
+    <!-- ===== Hero ===== -->
     <section class="hero" id="hero">
       <div class="hero-hud hud-tl" aria-hidden="true"></div>
       <div class="hero-hud hud-tr" aria-hidden="true"></div>
       <div class="hero-hud hud-bl" aria-hidden="true"></div>
       <div class="hero-hud hud-br" aria-hidden="true"></div>
 
-      <p class="hero-hello" data-i18n="hero.hello">你好，欢迎来到我的数字空间</p>
-      <h1 class="hero-name glitch" data-text="YOUR NAME">YOUR NAME</h1>
+      <p class="hero-hello mono"><span id="typing"></span><span class="cursor">_</span></p>
+      <h1 class="hero-name">Find the Best Fiverr Sellers — Without the Guesswork</h1>
       <p class="hero-sub">
-        <span class="typing" id="typing"></span><span class="cursor">_</span>
+        Honest reviews, price comparisons and free step-by-step guides for the best Fiverr sellers
+        in design, web, SEO, video and marketing — so you can hire with confidence.
       </p>
+
       <div class="hero-cta">
-        <a href="#works" class="btn btn-primary" data-i18n="hero.cta1">查看作品</a>
-        <a href="#about" class="btn btn-ghost" data-i18n="hero.cta2">了解我</a>
+        <a href="#recommended-services" class="btn btn-primary">Browse Vetted Sellers</a>
+        <a href="#guides" class="btn btn-ghost">Read Free Buyer Guides</a>
       </div>
+
       <div class="hero-stats">
-        <div class="stat"><span class="stat-num" data-count="6">0</span><span class="stat-plus">+</span><p data-i18n="hero.stat1">年经验</p></div>
-        <div class="stat"><span class="stat-num" data-count="40">0</span><span class="stat-plus">+</span><p data-i18n="hero.stat2">项目</p></div>
-        <div class="stat"><span class="stat-num" data-count="30">0</span><span class="stat-plus">+</span><p data-i18n="hero.stat3">文章</p></div>
+        <div class="stat"><span class="stat-num" data-count="6">0</span><span class="stat-plus" aria-hidden="true"></span><p>Vetted Categories</p></div>
+        <div class="stat"><span class="stat-num" data-count="3">0</span><span class="stat-plus" aria-hidden="true"></span><p>Step-by-Step Guides</p></div>
+        <div class="stat"><span class="stat-num" data-count="100">0</span><span class="stat-plus">%</span><p>Free to Use</p></div>
       </div>
       <div class="scroll-hint" aria-hidden="true"><span></span></div>
     </section>
 
-    <!-- ===== 关于我 / 个人介绍 ===== -->
-    <section class="section" id="about">
+    <!-- ===== Affiliate Disclosure (compliance banner) ===== -->
+    <section class="disclosure" id="disclosure">
+      <div class="disclosure-box reveal">
+        <span class="d-icon" aria-hidden="true">🤝</span>
+        <p>
+          <strong>Affiliate Disclosure:</strong> GoodThings is reader-supported. When you buy
+          through links on our site, we may earn an affiliate commission from Fiverr —
+          at no extra cost to you. We only recommend services we have reviewed and vetted.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Top Fiverr Services (recommendation cards) ===== -->
+    <section class="section" id="recommended-services">
       <div class="section-head">
         <span class="section-index">01</span>
-        <h2 data-i18n="about.title">关于我</h2>
+        <h2>Top Fiverr Services</h2>
         <div class="section-line"></div>
       </div>
-      <div class="about-grid">
-        <div class="about-photo reveal">
-          <!-- ★ 占位图：images/avatar.jpg（800x800 建议正方形头像） -->
-          <div class="photo-frame">
-            <img src="images/avatar.jpg" alt="avatar" id="avatar-img">
-            <div class="photo-corners" aria-hidden="true"></div>
+
+      <!-- ⚠ Replace each /go/... path with your real Fiverr affiliate link (Fiverr Affiliates / CJ / Impact) -->
+      <div class="cards-grid">
+
+        <article class="service-card reveal">
+          <div class="card-media" style="--icon:'🎨'">
+            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=70" alt="Graphic designer workspace with brand color swatches and design tools" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">Graphic Design</span>
           </div>
-          <div class="photo-tag mono" data-i18n="about.photoTag">// ID CARD · 001</div>
-        </div>
-        <div class="about-text reveal">
-          <h3 data-i18n="about.name">我是你的名字</h3>
-          <p class="about-role mono" data-i18n="about.role">[ 科幻创作者 / 数字体验设计师 ]</p>
-          <p data-i18n="about.bio1">【占位文字】这里写你的个人介绍第一段：你是谁、从事什么领域、有什么独特经历。建议 2~3 句话，突出你的个人标签与专业方向。</p>
-          <p data-i18n="about.bio2">【占位文字】这里写第二段：你的理念、擅长技能或正在探索的方向，让访客快速建立对你的认知与信任。</p>
-          <div class="skill-tags">
-            <span class="tag">Skill A</span><span class="tag">Skill B</span><span class="tag">Skill C</span>
-            <span class="tag">Skill D</span><span class="tag">Skill E</span><span class="tag">Skill F</span>
+          <div class="service-body">
+            <h3>Best Fiverr Logo Designers for Startups (2026 Picks)</h3>
+            <p>We compared 40+ sellers on price, turnaround and revisions — these studios deliver agency-quality branding on a startup budget.</p>
+            <a class="card-btn" href="https://goodthings.top/go/logo-design" target="_blank" rel="sponsored nofollow noopener">Read Review &amp; View Sellers <span class="arrow">→</span></a>
           </div>
-        </div>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="card-media" style="--icon:'💻'">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=70" alt="Laptop showing website code during WordPress development" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">WordPress Dev</span>
+          </div>
+          <div class="service-body">
+            <h3>Top WordPress Developers on Fiverr for Small Business Sites</h3>
+            <p>Fast, SEO-ready and mobile-friendly builds from vetted sellers — with real delivery times and revision policies compared.</p>
+            <a class="card-btn" href="https://goodthings.top/go/wordpress-dev" target="_blank" rel="sponsored nofollow noopener">Read Review &amp; View Sellers <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="card-media" style="--icon:'📈'">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=70" alt="Laptop displaying SEO analytics dashboard with growth charts" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">SEO</span>
+          </div>
+          <div class="service-body">
+            <h3>10 Fiverr SEO Experts That Actually Move the Needle</h3>
+            <p>No empty promises — these sellers show real ranking case studies, transparent audits and white-hat link building.</p>
+            <a class="card-btn" href="https://goodthings.top/go/seo-experts" target="_blank" rel="sponsored nofollow noopener">Read Review &amp; View Sellers <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="card-media" style="--icon:'🎬'">
+            <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=70" alt="Video editing timeline on a professional editing workstation" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">Video Editing</span>
+          </div>
+          <div class="service-body">
+            <h3>Fiverr Video Editors for YouTube &amp; Reels: Our Top 6</h3>
+            <p>From talking-head cuts to motion graphics — editors who keep your retention high and your turnaround under 48 hours.</p>
+            <a class="card-btn" href="https://goodthings.top/go/video-editing" target="_blank" rel="sponsored nofollow noopener">Read Review &amp; View Sellers <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="card-media" style="--icon:'📱'">
+            <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=900&q=70" alt="Smartphone with social media application icons on screen" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">Digital Marketing</span>
+          </div>
+          <div class="service-body">
+            <h3>Social Media Managers on Fiverr Worth Every Dollar</h3>
+            <p>Content calendars, community growth and pin strategy — managers who treat your brand like their own portfolio.</p>
+            <a class="card-btn" href="https://goodthings.top/go/social-media" target="_blank" rel="sponsored nofollow noopener">Read Review &amp; View Sellers <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="card-media" style="--icon:'✍️'">
+            <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=70" alt="Fountain pen writing on paper, creative copywriting scene" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">Copywriting</span>
+          </div>
+          <div class="service-body">
+            <h3>Fiverr Copywriters Who Write Copy That Converts</h3>
+            <p>Landing pages, email sequences and product descriptions — reviewed for tone, research depth and conversion focus.</p>
+            <a class="card-btn" href="https://goodthings.top/go/copywriting" target="_blank" rel="sponsored nofollow noopener">Read Review &amp; View Sellers <span class="arrow">→</span></a>
+          </div>
+        </article>
+
       </div>
     </section>
 
-    <!-- ===== 个人视频 ===== -->
-    <section class="section" id="video">
+    <!-- ===== Guides & Articles ===== -->
+    <section class="section" id="guides">
       <div class="section-head">
         <span class="section-index">02</span>
-        <h2 data-i18n="video.title">个人视频</h2>
+        <h2>Guides &amp; Articles</h2>
         <div class="section-line"></div>
       </div>
-      <div class="video-wrap reveal">
-        <div class="video-frame">
-          <div class="video-corners" aria-hidden="true"></div>
-          <!-- ★ 占位视频：将本地视频文件放到 images/ 下，例如 images/my-video.mp4，然后替换 <source> 的 src -->
-          <video id="intro-video" controls preload="metadata" poster="images/video-poster.jpg">
-            <source src="images/my-video.mp4" type="video/mp4">
-            <!-- 如果用 B 站/YouTube，注释掉上面的 <video>，取消下面 iframe 注释并填入链接
-            <iframe src="https://player.bilibili.com/player.html?bvid=BVxxxxxx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-            -->
-          </video>
-          <div class="video-note mono" data-i18n="video.note">[ 视频文件：images/my-video.mp4 · 封面：images/video-poster.jpg ]</div>
-        </div>
-        <p class="video-desc" data-i18n="video.desc">【占位文字】视频简介：一句话介绍这个视频的内容，例如个人宣传片、作品混剪或演讲记录。</p>
+      <div class="cards-grid guides-grid">
+
+        <article class="article-card reveal">
+          <a href="https://goodthings.top/guides/logo-designers-under-50" class="card-media" style="--icon:'🖌️'">
+            <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=900&q=70" alt="Designer sketching logo concepts on a drawing tablet" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">Buying Guide</span>
+          </a>
+          <div class="service-body">
+            <div class="card-meta"><span>Graphic Design</span><time>Updated Aug 2026 · 8 min read</time></div>
+            <h3>Top 5 Fiverr Logo Designers Under $50</h3>
+            <p>Premium branding doesn't need a premium budget. We ordered real logos from five low-cost sellers and graded the results.</p>
+            <a class="card-btn" href="https://goodthings.top/guides/logo-designers-under-50">Read the Guide <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="article-card reveal">
+          <a href="https://goodthings.top/guides/hire-wordpress-developer" class="card-media" style="--icon:'🛠️'">
+            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=900&q=70" alt="Programmer screen with colorful code in a dark editor" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">Step-by-Step</span>
+          </a>
+          <div class="service-body">
+            <div class="card-meta"><span>Web Development</span><time>Updated Jul 2026 · 12 min read</time></div>
+            <h3>How to Hire a WordPress Developer on Fiverr (Step-by-Step)</h3>
+            <p>From writing a crystal-clear brief to checking delivery quality — the exact checklist we use before recommending any seller.</p>
+            <a class="card-btn" href="https://goodthings.top/guides/hire-wordpress-developer">Read the Guide <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="article-card reveal">
+          <a href="https://goodthings.top/guides/write-a-winning-brief" class="card-media" style="--icon:'📋'">
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=900&q=70" alt="Person taking structured notes next to a laptop and coffee" loading="lazy" onerror="this.classList.add('broken')">
+            <span class="badge">Pro Tips</span>
+          </a>
+          <div class="service-body">
+            <div class="card-meta"><span>All Categories</span><time>Updated Jun 2026 · 6 min read</time></div>
+            <h3>How to Write a Fiverr Brief That Gets Great Work</h3>
+            <p>The difference between mediocre and outstanding deliveries is usually the brief. Use our proven 7-part template.</p>
+            <a class="card-btn" href="https://goodthings.top/guides/write-a-winning-brief">Read the Guide <span class="arrow">→</span></a>
+          </div>
+        </article>
+
       </div>
     </section>
 
-    <!-- ===== 文章 ===== -->
-    <section class="section" id="articles">
+    <!-- ===== Best Fiverr Sellers ===== -->
+    <section class="section" id="sellers">
       <div class="section-head">
         <span class="section-index">03</span>
-        <h2 data-i18n="articles.title">文章</h2>
+        <h2>Best Fiverr Sellers</h2>
         <div class="section-line"></div>
       </div>
-      <div class="article-grid">
-        <!-- ★ 占位图：images/article-01.jpg -->
-        <article class="article-card reveal">
-          <a href="#" class="card-cover">
-            <img src="images/article-01.jpg" alt="article-01">
-            <span class="cover-tag mono">images/article-01.jpg</span>
-          </a>
-          <div class="card-body">
-            <div class="card-meta mono"><span data-i18n="articles.tag1">随笔</span><time>2026-08-01</time></div>
-            <h3 data-i18n="articles.a1.title">【占位标题】文章标题一：关于未来的一百种想象</h3>
-            <p data-i18n="articles.a1.excerpt">【占位摘要】这里是文章摘要占位文字，写 1~2 句吸引读者点击的内容概述，说明文章主题与价值。</p>
-            <a href="#" class="card-link" data-i18n="articles.read">阅读更多 →</a>
+
+      <!-- ⚠ Replace /go/... paths with your Fiverr affiliate deep links to each seller gig -->
+      <div class="seller-grid">
+
+        <div class="seller-card reveal">
+          <div class="seller-avatar" style="--av1:#00f0ff;--av2:#a78bfa">PC</div>
+          <div class="seller-info">
+            <h3>PixelCraft Studio <span class="verified" title="Fiverr Pro verified">✔</span></h3>
+            <p class="seller-meta">Logo Design &amp; Brand Identity · Level 2 Seller</p>
+            <p class="seller-rating"><span class="stars" aria-hidden="true">★★★★★</span> 4.9 <span class="rev">(3,214 reviews)</span></p>
           </div>
-        </article>
-        <!-- ★ 占位图：images/article-02.jpg -->
-        <article class="article-card reveal">
-          <a href="#" class="card-cover">
-            <img src="images/article-02.jpg" alt="article-02">
-            <span class="cover-tag mono">images/article-02.jpg</span>
-          </a>
-          <div class="card-body">
-            <div class="card-meta mono"><span data-i18n="articles.tag2">技术</span><time>2026-07-12</time></div>
-            <h3 data-i18n="articles.a2.title">【占位标题】文章标题二：粒子系统的设计与实现</h3>
-            <p data-i18n="articles.a2.excerpt">【占位摘要】这里是文章摘要占位文字，写 1~2 句吸引读者点击的内容概述，说明文章主题与价值。</p>
-            <a href="#" class="card-link" data-i18n="articles.read">阅读更多 →</a>
+          <div class="seller-action">
+            <p class="seller-price">from <strong>$45</strong></p>
+            <a class="btn-mini" href="https://goodthings.top/go/pixelcraft" target="_blank" rel="sponsored nofollow noopener">View on Fiverr →</a>
           </div>
-        </article>
-        <!-- ★ 占位图：images/article-03.jpg -->
-        <article class="article-card reveal">
-          <a href="#" class="card-cover">
-            <img src="images/article-03.jpg" alt="article-03">
-            <span class="cover-tag mono">images/article-03.jpg</span>
-          </a>
-          <div class="card-body">
-            <div class="card-meta mono"><span data-i18n="articles.tag3">创作</span><time>2026-06-20</time></div>
-            <h3 data-i18n="articles.a3.title">【占位标题】文章标题三：我的科幻创作手记</h3>
-            <p data-i18n="articles.a3.excerpt">【占位摘要】这里是文章摘要占位文字，写 1~2 句吸引读者点击的内容概述，说明文章主题与价值。</p>
-            <a href="#" class="card-link" data-i18n="articles.read">阅读更多 →</a>
+        </div>
+
+        <div class="seller-card reveal">
+          <div class="seller-avatar" style="--av1:#7df3ff;--av2:#00f0ff">CN</div>
+          <div class="seller-info">
+            <h3>CodeNest Dev <span class="verified" title="Fiverr Pro verified">✔</span></h3>
+            <p class="seller-meta">WordPress Development &amp; Speed Optimization · Pro</p>
+            <p class="seller-rating"><span class="stars" aria-hidden="true">★★★★★</span> 4.8 <span class="rev">(1,876 reviews)</span></p>
           </div>
-        </article>
+          <div class="seller-action">
+            <p class="seller-price">from <strong>$120</strong></p>
+            <a class="btn-mini" href="https://goodthings.top/go/codenest" target="_blank" rel="sponsored nofollow noopener">View on Fiverr →</a>
+          </div>
+        </div>
+
+        <div class="seller-card reveal">
+          <div class="seller-avatar" style="--av1:#a78bfa;--av2:#00f0ff">RR</div>
+          <div class="seller-info">
+            <h3>RankRise SEO</h3>
+            <p class="seller-meta">Technical SEO &amp; White-Hat Link Building · Level 2</p>
+            <p class="seller-rating"><span class="stars" aria-hidden="true">★★★★★</span> 4.9 <span class="rev">(942 reviews)</span></p>
+          </div>
+          <div class="seller-action">
+            <p class="seller-price">from <strong>$80</strong></p>
+            <a class="btn-mini" href="https://goodthings.top/go/rankrise" target="_blank" rel="sponsored nofollow noopener">View on Fiverr →</a>
+          </div>
+        </div>
+
+        <div class="seller-card reveal">
+          <div class="seller-avatar" style="--av1:#f472b6;--av2:#a78bfa">MC</div>
+          <div class="seller-info">
+            <h3>MotionCut Edits <span class="verified" title="Fiverr Pro verified">✔</span></h3>
+            <p class="seller-meta">YouTube &amp; Short-Form Video Editing · Pro Verified</p>
+            <p class="seller-rating"><span class="stars" aria-hidden="true">★★★★★</span> 5.0 <span class="rev">(638 reviews)</span></p>
+          </div>
+          <div class="seller-action">
+            <p class="seller-price">from <strong>$60</strong></p>
+            <a class="btn-mini" href="https://goodthings.top/go/motioncut" target="_blank" rel="sponsored nofollow noopener">View on Fiverr →</a>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- ===== 作品展示 ===== -->
-    <section class="section" id="works">
-      <div class="section-head">
-        <span class="section-index">04</span>
-        <h2 data-i18n="works.title">作品展示</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="works-grid">
-        <!-- ★ 占位图：images/work-01.jpg ~ work-06.jpg -->
-        <a href="#" class="work-card reveal">
-          <img src="images/work-01.jpg" alt="work-01">
-          <div class="work-overlay">
-            <span class="work-tag mono">PROJECT 01</span>
-            <h3 data-i18n="works.w1.title">【占位】作品名称一</h3>
-            <p data-i18n="works.w1.desc">作品简介占位：一句话说明这个作品是什么、用了什么技术。</p>
-          </div>
-        </a>
-        <a href="#" class="work-card reveal">
-          <img src="images/work-02.jpg" alt="work-02">
-          <div class="work-overlay">
-            <span class="work-tag mono">PROJECT 02</span>
-            <h3 data-i18n="works.w2.title">【占位】作品名称二</h3>
-            <p data-i18n="works.w2.desc">作品简介占位：一句话说明这个作品是什么、用了什么技术。</p>
-          </div>
-        </a>
-        <a href="#" class="work-card reveal">
-          <img src="images/work-03.jpg" alt="work-03">
-          <div class="work-overlay">
-            <span class="work-tag mono">PROJECT 03</span>
-            <h3 data-i18n="works.w3.title">【占位】作品名称三</h3>
-            <p data-i18n="works.w3.desc">作品简介占位：一句话说明这个作品是什么、用了什么技术。</p>
-          </div>
-        </a>
-        <a href="#" class="work-card reveal">
-          <img src="images/work-04.jpg" alt="work-04">
-          <div class="work-overlay">
-            <span class="work-tag mono">PROJECT 04</span>
-            <h3 data-i18n="works.w4.title">【占位】作品名称四</h3>
-            <p data-i18n="works.w4.desc">作品简介占位：一句话说明这个作品是什么、用了什么技术。</p>
-          </div>
-        </a>
-        <a href="#" class="work-card reveal">
-          <img src="images/work-05.jpg" alt="work-05">
-          <div class="work-overlay">
-            <span class="work-tag mono">PROJECT 05</span>
-            <h3 data-i18n="works.w5.title">【占位】作品名称五</h3>
-            <p data-i18n="works.w5.desc">作品简介占位：一句话说明这个作品是什么、用了什么技术。</p>
-          </div>
-        </a>
-        <a href="#" class="work-card reveal">
-          <img src="images/work-06.jpg" alt="work-06">
-          <div class="work-overlay">
-            <span class="work-tag mono">PROJECT 06</span>
-            <h3 data-i18n="works.w6.title">【占位】作品名称六</h3>
-            <p data-i18n="works.w6.desc">作品简介占位：一句话说明这个作品是什么、用了什么技术。</p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <!-- ===== 联系 / 页脚 ===== -->
-    <footer class="footer" id="contact">
-      <h2 class="footer-title" data-i18n="footer.title">建立连接</h2>
-      <p data-i18n="footer.desc">【占位文字】欢迎合作与交流，可以通过以下方式找到我。</p>
-      <div class="social-row">
-        <a href="#" class="social-link">WeChat</a>
-        <a href="#" class="social-link">Email</a>
-        <a href="#" class="social-link">GitHub</a>
-        <a href="#" class="social-link">Bilibili</a>
-      </div>
-      <p class="copyright mono">© 2026 YOUR NAME · <span data-i18n="footer.rights">保留所有权利</span></p>
+    <!-- ===== Footer ===== -->
+    <footer class="footer" id="footer">
+      <div class="footer-brand">◈ GOOD THINGS</div>
+      <p class="footer-bio">
+        GoodThings helps entrepreneurs and small businesses find vetted freelance
+        services on Fiverr — with honest reviews, practical guides and zero fluff.
+      </p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="#disclosure">Affiliate Disclosure</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="mailto:liug6576@gmail.com">Contact Us</a>
+      </nav>
+      <p class="footer-note">
+        GoodThings participates in the Fiverr Affiliate Program and may earn a commission
+        on qualifying purchases made through our links, at no additional cost to you.
+      </p>
+      <p class="copyright mono">Copyright © 2026 GOOD THINGS. All rights reserved.</p>
     </footer>
   </main>
 
