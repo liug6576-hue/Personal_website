@@ -167,7 +167,192 @@
 })();
 
 /* ============================================================
-   二、Page interactions
+   二、Floating Lofi Audio Player
+   - Royalty-free Pixabay tracks · starts PAUSED (no autoplay)
+   - Self-injects site-wide: any page that loads main.js gets it
+   ============================================================ */
+(function lofiPlayer() {
+  /* ---- Playlist: replace src here to swap tracks ---- */
+  const TRACKS = [
+    {
+      title: "Cozy Coffee House",
+      src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3",
+    },
+    {
+      title: "Midnight Chill Beat",
+      src: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3",
+    },
+    {
+      title: "Lazy Afternoon Lofi",
+      /* NOTE: original 2022 CDN key was removed from Pixabay (S3 403); this is
+         the current official download URL of the same track (id 267117) */
+      src: "https://cdn.pixabay.com/download/audio/2024/11/21/audio_458affa25f.mp3?filename=lofcosmos-lazy-afternoon-lofi-267117.mp3",
+    },
+  ];
+
+  /* ---- Inline SVG icons (fill: currentColor unless noted) ---- */
+  const ICONS = {
+    play:
+      '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72c0 .8.87 1.3 1.56.88l10.79-6.86a1.04 1.04 0 0 0 0-1.76L9.56 4.26A1.04 1.04 0 0 0 8 5.14z"/></svg>',
+    pause:
+      '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.4v14H7zM13.6 5H17v14h-3.4z"/></svg>',
+    prev:
+      '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6a1 1 0 0 0-1 1v10a1 1 0 1 0 2 0V7a1 1 0 0 0-1-1z"/><path d="M19 6.32v11.36c0 .79-.87 1.27-1.54.84l-8.1-5.68a1 1 0 0 1 0-1.68l8.1-5.68c.67-.43 1.54.05 1.54.84z"/></svg>',
+    next:
+      '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 6a1 1 0 0 1 1 1v10a1 1 0 1 1-2 0V7a1 1 0 0 1 1-1z"/><path d="M5 6.32v11.36c0 .79.87 1.27 1.54.84l8.1-5.68a1 1 0 0 0 0-1.68L6.54 5.48C5.87 5.05 5 5.53 5 6.32z"/></svg>',
+    volOn:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="lp-ic-fill" d="M11 5 6 9H3.5a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5H6l5 4V5z"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18 6.8a7.5 7.5 0 0 1 0 10.4"/></svg>',
+    volOff:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="lp-ic-fill" d="M11 5 6 9H3.5a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5H6l5 4V5z"/><path d="m16 9.5 4.5 5M20.5 9.5 16 14.5"/></svg>',
+    chevron:
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
+    note:
+      '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>',
+  };
+
+  /* localStorage may throw in privacy mode — guard every access */
+  const storage = {
+    get(key) {
+      try { return localStorage.getItem(key); } catch (e) { return null; }
+    },
+    set(key, val) {
+      try { localStorage.setItem(key, val); } catch (e) { /* ignore */ }
+    },
+  };
+
+  /* ---- Mount (auto-create root on pages without the HTML node) ---- */
+  let root = document.getElementById("lofi-player-root");
+  if (!root) {
+    root = document.createElement("div");
+    root.id = "lofi-player-root";
+    document.body.appendChild(root);
+  }
+
+  root.innerHTML =
+    '<div class="lofi-player" role="region" aria-label="Lofi music player">' +
+      '<div class="lp-head">' +
+        '<div class="lp-disc-wrap">' +
+          '<div class="lp-disc">' + ICONS.note + "</div>" +
+          '<button type="button" class="lp-play-mini" aria-label="Play">' + ICONS.play + "</button>" +
+        "</div>" +
+        '<div class="lp-meta">' +
+          '<p class="lp-tag"><span class="lp-live">LOFI MIX</span><span class="lp-index">01 / 03</span></p>' +
+          '<p class="lp-title"></p>' +
+        "</div>" +
+        '<button type="button" class="lp-collapse" aria-label="Expand player" aria-expanded="false">' + ICONS.chevron + "</button>" +
+      "</div>" +
+      '<div class="lp-body">' +
+        '<div class="lp-controls">' +
+          '<button type="button" class="lp-btn lp-prev" aria-label="Previous track">' + ICONS.prev + "</button>" +
+          '<button type="button" class="lp-btn lp-main lp-toggle" aria-label="Play">' + ICONS.play + "</button>" +
+          '<button type="button" class="lp-btn lp-next" aria-label="Next track">' + ICONS.next + "</button>" +
+          '<button type="button" class="lp-btn lp-mute" aria-label="Mute" aria-pressed="false">' + ICONS.volOn + "</button>" +
+        "</div>" +
+      "</div>" +
+    "</div>";
+
+  const player  = root.querySelector(".lofi-player");
+  const titleEl = root.querySelector(".lp-title");
+  const indexEl = root.querySelector(".lp-index");
+  const liveEl  = root.querySelector(".lp-live");
+  const toggleBtn = root.querySelector(".lp-toggle");
+  const miniBtn   = root.querySelector(".lp-play-mini");
+  const prevBtn   = root.querySelector(".lp-prev");
+  const nextBtn   = root.querySelector(".lp-next");
+  const muteBtn   = root.querySelector(".lp-mute");
+  const collapseBtn = root.querySelector(".lp-collapse");
+
+  /* ---- Audio core: no autoplay, no preload (zero traffic until play) ---- */
+  const audio = new Audio();
+  audio.preload = "none";
+  let current = 0;
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+
+  function loadTrack(i, autoplay) {
+    current = (i + TRACKS.length) % TRACKS.length;
+    const track = TRACKS[current];
+    player.classList.remove("is-error");
+    liveEl.textContent = "LOFI MIX";
+    titleEl.textContent = track.title;
+    indexEl.textContent = pad(current + 1) + " / " + pad(TRACKS.length);
+    audio.src = track.src;
+    if (autoplay) {
+      const p = audio.play();
+      if (p && typeof p.catch === "function") p.catch(function () { /* error event handles UI */ });
+    }
+  }
+
+  function setPlayingUI(playing) {
+    player.classList.toggle("is-playing", playing);
+    toggleBtn.innerHTML = playing ? ICONS.pause : ICONS.play;
+    miniBtn.innerHTML   = playing ? ICONS.pause : ICONS.play;
+    toggleBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
+    miniBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
+  }
+
+  function togglePlay() {
+    if (audio.paused) {
+      const p = audio.play();
+      if (p && typeof p.catch === "function") p.catch(function () { /* error event handles UI */ });
+    } else {
+      audio.pause();
+    }
+  }
+
+  /* ---- Events ---- */
+  audio.addEventListener("play", function () { setPlayingUI(true); });
+  audio.addEventListener("pause", function () { setPlayingUI(false); });
+  audio.addEventListener("ended", function () { loadTrack(current + 1, true); });
+  audio.addEventListener("error", function () {
+    if (!audio.src) return;
+    player.classList.add("is-error");
+    liveEl.textContent = "LOAD ERROR";
+  });
+
+  toggleBtn.addEventListener("click", togglePlay);
+  miniBtn.addEventListener("click", togglePlay);
+
+  nextBtn.addEventListener("click", function () {
+    loadTrack(current + 1, !audio.paused);
+  });
+  prevBtn.addEventListener("click", function () {
+    /* Restart current track if it is already 3s in; otherwise jump back */
+    if (audio.src && audio.currentTime > 3) {
+      audio.currentTime = 0;
+    } else {
+      loadTrack(current - 1, !audio.paused);
+    }
+  });
+
+  muteBtn.addEventListener("click", function () {
+    audio.muted = !audio.muted;
+    muteBtn.classList.toggle("is-muted", audio.muted);
+    muteBtn.innerHTML = audio.muted ? ICONS.volOff : ICONS.volOn;
+    muteBtn.setAttribute("aria-pressed", String(audio.muted));
+    muteBtn.setAttribute("aria-label", audio.muted ? "Unmute" : "Mute");
+  });
+
+  function setCollapsed(collapsed) {
+    player.classList.toggle("is-collapsed", collapsed);
+    collapseBtn.setAttribute("aria-expanded", String(!collapsed));
+    collapseBtn.setAttribute("aria-label", collapsed ? "Expand player" : "Collapse player");
+    storage.set("lofi-collapsed", collapsed ? "1" : "0");
+  }
+  collapseBtn.addEventListener("click", function () {
+    setCollapsed(!player.classList.contains("is-collapsed"));
+  });
+
+  /* ---- Initial state: paused; collapsed on mobile unless user chose otherwise ---- */
+  loadTrack(0, false);
+  const saved = storage.get("lofi-collapsed");
+  const startCollapsed =
+    saved !== null ? saved === "1" : window.matchMedia("(max-width: 600px)").matches;
+  setCollapsed(startCollapsed);
+})();
+
+/* ============================================================
+   三、Page interactions
    ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
 

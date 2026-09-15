@@ -498,6 +498,143 @@ section[id], .disclosure { scroll-margin-top: 84px; }
 .legal-toc a { color: var(--text-dim); transition: color .2s; }
 .legal-toc a:hover { color: var(--cyan); }
 
+/* ============================================================
+   悬浮 Lofi 音乐播放器（左下角 · 赛博玻璃拟态）
+   ============================================================ */
+.lofi-player {
+  position: fixed; left: 20px; bottom: 20px; z-index: 95;
+  width: 286px;
+  border-radius: 16px;
+  user-select: none;
+  color: var(--text);
+  background: linear-gradient(145deg, rgba(13, 18, 36, .85), rgba(22, 14, 42, .82));
+  border: 1px solid rgba(0, 240, 255, .28);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .55),
+              0 0 26px rgba(0, 240, 255, .10),
+              inset 0 1px 0 rgba(255, 255, 255, .06);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  animation: lp-in .55s cubic-bezier(.22, 1, .36, 1) both;
+}
+@keyframes lp-in {
+  from { opacity: 0; transform: translateY(18px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Head: vinyl + meta + collapse ---- */
+.lp-head {
+  display: flex; align-items: center; gap: 11px;
+  padding: 12px 12px 10px;
+}
+.lp-disc-wrap { position: relative; width: 42px; height: 42px; flex: 0 0 auto; }
+.lp-disc {
+  width: 100%; height: 100%; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: repeating-radial-gradient(circle at 50% 50%, #1a2238 0 2px, #0b0f20 2px 4px);
+  border: 1px solid rgba(0, 240, 255, .45);
+  box-shadow: 0 0 14px rgba(0, 240, 255, .25), inset 0 0 10px rgba(0, 0, 0, .7);
+  animation: lp-spin 7s linear infinite;
+  animation-play-state: paused;
+}
+.lp-disc svg {
+  width: 18px; height: 18px; fill: var(--cyan);
+  filter: drop-shadow(0 0 5px rgba(0, 240, 255, .9));
+}
+.lofi-player.is-playing .lp-disc { animation-play-state: running; }
+@keyframes lp-spin { to { transform: rotate(360deg); } }
+
+/* Mini play/pause — only interactive while collapsed */
+.lp-play-mini {
+  position: absolute; inset: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: none; cursor: pointer; padding: 0;
+  color: var(--cyan); background: rgba(5, 7, 15, .62);
+  visibility: hidden;
+  transition: background .25s;
+}
+.lp-play-mini svg { width: 20px; height: 20px; fill: currentColor; }
+.lofi-player.is-collapsed .lp-play-mini { visibility: visible; }
+.lp-play-mini:hover { background: rgba(0, 240, 255, .18); }
+
+.lp-meta { flex: 1; min-width: 0; }
+.lp-tag {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: .6rem; letter-spacing: 2px;
+  color: var(--text-dim); text-transform: uppercase;
+}
+.lp-live { color: var(--cyan); display: inline-flex; align-items: center; gap: 5px; }
+.lp-live::before {
+  content: ""; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 6px var(--cyan);
+}
+.lofi-player.is-playing .lp-live::before { animation: lp-blink 1.2s ease-in-out infinite; }
+@keyframes lp-blink { 50% { opacity: .25; } }
+.lp-index { color: var(--purple); }
+.lp-title {
+  margin-top: 3px; font-size: .84rem; font-weight: 600; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.lofi-player.is-error .lp-title { color: var(--gold); }
+
+.lp-collapse {
+  flex: 0 0 auto; width: 26px; height: 26px; border-radius: 8px;
+  background: transparent; border: 1px solid transparent; padding: 0;
+  color: var(--text-dim); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .25s, border-color .25s;
+}
+.lp-collapse:hover { color: var(--cyan); border-color: var(--line); }
+.lp-collapse svg { width: 16px; height: 16px; transition: transform .3s; }
+.lofi-player.is-collapsed .lp-collapse svg { transform: rotate(180deg); }
+
+/* ---- Body: transport controls ---- */
+.lp-body { padding: 0 14px 14px; }
+.lofi-player.is-collapsed .lp-body { display: none; }
+.lofi-player.is-collapsed .lp-head { padding-bottom: 12px; }
+
+.lp-controls { display: flex; align-items: center; gap: 9px; }
+.lp-btn {
+  width: 34px; height: 34px; border-radius: 10px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 240, 255, .04);
+  border: 1px solid rgba(0, 240, 255, .18);
+  color: var(--text-dim); cursor: pointer;
+  transition: color .22s, border-color .22s, box-shadow .22s, transform .22s;
+}
+.lp-btn svg { width: 17px; height: 17px; fill: currentColor; }
+.lp-btn:hover {
+  color: var(--cyan); border-color: rgba(0, 240, 255, .5);
+  box-shadow: 0 0 12px rgba(0, 240, 255, .25);
+}
+.lp-btn.lp-main {
+  width: 44px; height: 44px; border-radius: 50%;
+  color: var(--cyan);
+  background: linear-gradient(135deg, rgba(0, 240, 255, .22), rgba(167, 139, 250, .22));
+  border-color: rgba(0, 240, 255, .55);
+  box-shadow: 0 0 16px rgba(0, 240, 255, .28);
+}
+.lp-btn.lp-main svg { width: 20px; height: 20px; }
+.lp-btn.lp-main:hover { transform: scale(1.07); color: #fff; }
+.lp-mute { margin-left: auto; }
+.lp-mute svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.lp-mute .lp-ic-fill { fill: currentColor; stroke: none; }
+.lp-mute.is-muted { color: var(--gold); border-color: rgba(251, 191, 36, .4); }
+
+.lofi-player button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+/* ---- Mobile: compact icon pill, never blocks centered CTAs ---- */
+@media (max-width: 600px) {
+  .lofi-player {
+    left: 12px; bottom: 12px;
+    width: min(280px, calc(100vw - 24px));
+    border-radius: 14px;
+  }
+  .lofi-player.is-collapsed { width: auto; }
+  .lofi-player.is-collapsed .lp-head { gap: 8px; padding: 8px; }
+  .lofi-player.is-collapsed .lp-disc-wrap { width: 38px; height: 38px; }
+  .lofi-player.is-collapsed .lp-meta { display: none; }
+}
+
 /* 正文 */
 .legal {
   position: relative; z-index: 2;
